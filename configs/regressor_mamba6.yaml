@@ -1,0 +1,5 @@
+_base_: regressor_mamba8.yaml
+exp_name: regressor_mamba6
+model:
+  name: mamba_6
+  num_blocks: 6

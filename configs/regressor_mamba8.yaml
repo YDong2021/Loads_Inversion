@@ -1,0 +1,45 @@
+# ===================================================================
+# Mamba regressor — default (8 blocks)
+# ===================================================================
+_base_: default.yaml
+
+task: regressor
+exp_name: regressor_mamba8
+
+model:
+  name: mamba_8            # registered in models/regressor.py
+  in_channels: 3
+  hidden_dim: 96
+  n_positions: 50          # for Fourier PE, D = 49
+  pe_base: 1000.0
+  num_blocks: 8
+  ssm_state_dim: 16
+  conv_kernel: 7
+  expand_factor: 4         # projection factor inside Mamba block
+  dropout: 0.1
+  output_hidden: 48
+
+# loss hyperparameters come from prompt.md image-20260507100209520
+loss:
+  name: combined_impact
+  alpha: 0.8                 # weight on L_MSE
+  beta:  0.4                 # weight on L_grad
+  gamma: 1.0                 # weight on L_stage
+  delta: 0.8                 # weight on L_peak
+  stage_weights:
+    accel:   1.3
+    inertia: 1.0
+    decay:   0.2
+  # automatic staging thresholds (fraction of peak) -- see models/losses.py
+  stage_thresholds:
+    accel_low: 0.02          # pulse starts once signal > 2 %
+    plateau:   0.95          # inertia/plateau region >= 95 % of peak
+  peak_window: 5             # ± samples around argmax are treated as peak set
+
+# teacher forcing for regressor training: use ground-truth pos_id during train
+teacher_forcing: true
+
+train:
+  epochs: 120
+  lr: 5.0e-4
+  scheduler: cosine

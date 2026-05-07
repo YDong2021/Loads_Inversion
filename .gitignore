@@ -1,0 +1,39 @@
+# ===================================================================
+# Loads inversion — .gitignore
+# ===================================================================
+
+# Raw data (sensitive — must NOT be committed)
+/data/
+
+# Training artifacts
+checkpoints/
+logs/
+outputs/
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.ipynb_checkpoints/
+.pytest_cache/
+.mypy_cache/
+
+# Virtual envs / editors
+.venv/
+venv/
+env/
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Large intermediate files
+*.tmp
+*.bak
+*.h5
+*.hdf5
+*.npy
+*.npz
+*.xlsx

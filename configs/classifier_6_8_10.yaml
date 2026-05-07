@@ -1,0 +1,25 @@
+# ===================================================================
+# Position classifier — default variant [6, 8, 10]
+# ===================================================================
+_base_: default.yaml
+
+task: classifier            # classifier | regressor
+exp_name: classifier_6_8_10
+
+model:
+  name: resnet1d_6_8_10     # registered in models/classifier.py
+  in_channels: 3
+  num_classes: 50
+  stem_channels: 128
+  stage_channels: [128, 256, 512]
+  stage_blocks:   [6, 8, 10]   # this variant
+  kernel_size: 3
+  dropout: 0.0
+
+loss:
+  name: cross_entropy
+  label_smoothing: 0.0
+
+train:
+  epochs: 80
+  lr: 1.0e-3

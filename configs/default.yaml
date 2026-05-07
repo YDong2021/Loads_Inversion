@@ -1,0 +1,44 @@
+# ===================================================================
+# Default configuration (shared by both classifier and regressor)
+# Any experiment-specific YAML may override fields below.
+# ===================================================================
+
+seed: 42
+device: cuda          # cuda | cpu
+num_workers: 4
+
+# ----- data -----
+data:
+  force_xlsx: data/diverse_impact_signals.xlsx
+  response_h5: data/batch_response_results.h5
+  # target time length used everywhere: loads will be resampled from 2500 -> target_len
+  target_len: 2498
+  # sample = one (force_idx, node_id) pair = 3-channel response
+  # split ratios (train / val / test), split is done over (force_idx, node_id) pairs
+  split:
+    train: 0.70
+    val:   0.15
+    test:  0.15
+  # global normalization factor is computed on the training split only
+  norm_scope: train      # train | all
+  # cache decoded tensors to disk to speed up epochs
+  cache_dir: checkpoints/_cache
+
+# ----- optimization -----
+train:
+  batch_size: 64
+  epochs: 100
+  optimizer: adamw
+  lr: 1.0e-3
+  weight_decay: 1.0e-4
+  scheduler: cosine      # cosine | step | none
+  warmup_epochs: 3
+  grad_clip: 1.0
+  amp: true              # automatic mixed precision
+  log_every: 20          # iterations
+  save_every: 1          # epochs
+  early_stop_patience: 15
+
+# ----- logging / checkpoints -----
+log_dir: logs
+ckpt_dir: checkpoints

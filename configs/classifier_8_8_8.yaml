@@ -1,0 +1,5 @@
+_base_: classifier_6_8_10.yaml
+exp_name: classifier_8_8_8
+model:
+  name: resnet1d_8_8_8
+  stage_blocks: [8, 8, 8]
